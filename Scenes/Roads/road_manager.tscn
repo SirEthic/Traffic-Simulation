@@ -1,0 +1,138 @@
+[gd_scene load_steps=9 format=3 uid="uid://bwpj8kjfxs2km"]
+
+[ext_resource type="Script" uid="uid://jkkpyvqqjdfu" path="res://addons/road-generator/nodes/road_manager.gd" id="1_uxg5f"]
+[ext_resource type="Material" uid="uid://dpashsuk5lr4x" path="res://addons/road-generator/resources/road_texture.material" id="2_26cvo"]
+[ext_resource type="Script" uid="uid://ciheqlr0a0rjp" path="res://addons/road-generator/nodes/road_container.gd" id="3_kmsdy"]
+[ext_resource type="Script" uid="uid://bas54u5pjkfdw" path="res://addons/road-generator/nodes/road_point.gd" id="4_700cx"]
+[ext_resource type="PackedScene" uid="uid://bnx8t2ax7ydax" path="res://Scenes/Cars/default.tscn" id="5_26cvo"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_26cvo"]
+sky_horizon_color = Color(0.662243, 0.671743, 0.686743, 1)
+ground_horizon_color = Color(0.662243, 0.671743, 0.686743, 1)
+
+[sub_resource type="Sky" id="Sky_kmsdy"]
+sky_material = SubResource("ProceduralSkyMaterial_26cvo")
+
+[sub_resource type="Environment" id="Environment_700cx"]
+background_mode = 2
+sky = SubResource("Sky_kmsdy")
+tonemap_mode = 2
+glow_enabled = true
+
+[node name="RoadManager" type="Node3D"]
+script = ExtResource("1_uxg5f")
+material_resource = ExtResource("2_26cvo")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_700cx")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.866023, -0.433016, 0.250001, 0, 0.499998, 0.866027, -0.500003, 0.749999, -0.43301, 0, 0, 0)
+shadow_enabled = true
+
+[node name="RoadContainer" type="Node3D" parent="."]
+script = ExtResource("3_kmsdy")
+use_lowpoly_preview = true
+
+[node name="RP_005" type="Node3D" parent="RoadContainer"]
+transform = Transform3D(0.979821, 0.00109899, -0.199872, 0.000494184, 0.999968, 0.00792092, 0.199875, -0.00785986, 0.97979, 185.697, -1.52588e-05, -123.519)
+script = ExtResource("4_700cx")
+traffic_dir = Array[int]([2, 2, 2, 1, 1])
+lanes = Array[int]([2, 3, 4, 4, 2])
+prior_mag = 58.7745
+next_mag = 62.7125
+prior_pt_init = NodePath("../RP_006")
+next_pt_init = NodePath("../RP_024")
+
+[node name="RP_006" type="Node3D" parent="RoadContainer"]
+transform = Transform3D(0.89007, 0.00300267, -0.455814, 0.00260455, 0.999928, 0.011673, 0.455816, -0.0115769, 0.889998, 224.735, 0, -234.395)
+script = ExtResource("4_700cx")
+traffic_dir = Array[int]([2, 2, 1, 1])
+lanes = Array[int]([2, 4, 4, 2])
+prior_mag = 140.87
+next_mag = 58.7745
+prior_pt_init = NodePath("../RP_007")
+next_pt_init = NodePath("../RP_005")
+
+[node name="RP_007" type="Node3D" parent="RoadContainer"]
+transform = Transform3D(0.96178, 0.00348394, -0.273798, 0.000282107, 0.999906, 0.0137142, 0.27382, -0.0132673, 0.961689, 327.889, 0, -496.554)
+script = ExtResource("4_700cx")
+traffic_dir = Array[int]([2, 2, 1, 1])
+lanes = Array[int]([2, 4, 4, 2])
+prior_mag = 199.003
+next_mag = 140.87
+prior_pt_init = NodePath("../RP_008")
+next_pt_init = NodePath("../RP_006")
+
+[node name="RP_008" type="Node3D" parent="RoadContainer"]
+transform = Transform3D(0.670879, 0.00279218, 0.741561, -0.0121757, 0.999899, 0.00725031, -0.741466, -0.0138931, 0.670846, 183.832, 0, -867.551)
+script = ExtResource("4_700cx")
+traffic_dir = Array[int]([2, 2, 1, 1])
+lanes = Array[int]([2, 4, 4, 2])
+prior_mag = 132.654
+next_mag = 199.003
+prior_pt_init = NodePath("../RP_009")
+next_pt_init = NodePath("../RP_007")
+
+[node name="RP_009" type="Node3D" parent="RoadContainer"]
+transform = Transform3D(0.141026, 0.00108323, 0.990005, -0.0141481, 0.999899, 0.00092134, -0.989904, -0.0141366, 0.141027, -57.8632, 0, -976.965)
+script = ExtResource("4_700cx")
+traffic_dir = Array[int]([2, 2, 1, 1])
+lanes = Array[int]([2, 4, 4, 2])
+prior_mag = 288.683
+next_mag = 132.654
+prior_pt_init = NodePath("../RP_010")
+next_pt_init = NodePath("../RP_008")
+
+[node name="RP_010" type="Node3D" parent="RoadContainer"]
+transform = Transform3D(-0.995269, 0.00112557, -0.0971509, 0.00245139, 0.999905, -0.0135287, 0.0971265, -0.0137028, -0.995178, -287.999, 0, -447.507)
+script = ExtResource("4_700cx")
+traffic_dir = Array[int]([2, 2, 1, 1])
+lanes = Array[int]([2, 4, 4, 2])
+prior_mag = 191.688
+next_mag = 288.683
+prior_pt_init = NodePath("../RP_012")
+next_pt_init = NodePath("../RP_009")
+
+[node name="RP_012" type="Node3D" parent="RoadContainer"]
+transform = Transform3D(-0.89594, 0.00219685, -0.444169, 0.00654834, 0.999944, -0.00826308, 0.444126, -0.0103118, -0.895905, -213.784, 0, 133.284)
+script = ExtResource("4_700cx")
+traffic_dir = Array[int]([2, 2, 1, 1])
+lanes = Array[int]([2, 4, 4, 2])
+prior_mag = 32.5864
+next_mag = 102.257
+prior_pt_init = NodePath("../RP_014")
+next_pt_init = NodePath("../RP_010")
+
+[node name="RP_014" type="Node3D" parent="RoadContainer"]
+transform = Transform3D(-0.24617, 0.00839731, -0.96919, 0.0105353, 0.999926, 0.00598771, 0.969169, -0.00873668, -0.24624, -161.431, 0, 172.097)
+script = ExtResource("4_700cx")
+traffic_dir = Array[int]([2, 2, 1, 1])
+lanes = Array[int]([2, 4, 4, 2])
+prior_mag = 41.2053
+next_mag = 32.5864
+prior_pt_init = NodePath("../RP_004")
+next_pt_init = NodePath("../RP_012")
+
+[node name="RP_004" type="Node3D" parent="RoadContainer"]
+transform = Transform3D(-0.510264, 0.00357289, -0.86001, 0.0027214, 0.999993, 0.00253978, 0.860013, -0.00104447, -0.51027, 57.6194, 0, 207.457)
+script = ExtResource("4_700cx")
+traffic_dir = Array[int]([2, 2, 1, 1])
+lanes = Array[int]([2, 4, 4, 2])
+prior_mag = 77.2564
+next_mag = 45.0964
+prior_pt_init = NodePath("../RP_024")
+next_pt_init = NodePath("../RP_014")
+
+[node name="RP_024" type="Node3D" parent="RoadContainer"]
+transform = Transform3D(0.942554, 0.00413131, -0.334028, -0.00301877, 0.999988, 0.00384971, 0.33404, -0.00262021, 0.942555, 174.036, 0, 105.864)
+script = ExtResource("4_700cx")
+traffic_dir = Array[int]([2, 2, 1, 1])
+lanes = Array[int]([2, 4, 4, 2])
+prior_mag = 77.2564
+next_mag = 77.2564
+prior_pt_init = NodePath("../RP_005")
+next_pt_init = NodePath("../RP_004")
+
+[node name="Car" parent="." instance=ExtResource("5_26cvo")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 188.823, 0, -0.00431824)

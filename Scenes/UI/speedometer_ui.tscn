@@ -1,0 +1,43 @@
+[gd_scene load_steps=2 format=3 uid="uid://de34pbm4ps6if"]
+
+[ext_resource type="Script" uid="uid://bo86b6apwoqcp" path="res://Scenes/UI/speedometer_ui.gd" id="1_p2uy3"]
+
+[node name="SpeedometerUI" type="Control"]
+layout_mode = 3
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -40.0
+offset_right = 2560.0
+grow_vertical = 0
+script = ExtResource("1_p2uy3")
+
+[node name="SpeedLabel" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -23.0
+offset_right = 40.0
+grow_vertical = 0
+
+[node name="UnitLabel" type="Label" parent="."]
+layout_mode = 0
+offset_left = 76.0
+offset_top = -26.0
+offset_right = 116.0
+offset_bottom = -3.0
+
+[node name="GearLabel" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -60.0
+offset_top = -35.0
+offset_right = -20.0
+offset_bottom = -12.0
+grow_horizontal = 0
+grow_vertical = 0
