@@ -1,4 +1,8 @@
+<<<<<<< Updated upstream
 [gd_scene load_steps=18 format=4 uid="uid://bl26myw6noumf"]
+=======
+[gd_scene load_steps=18 format=4 uid="uid://dl7xj1j4pbmo"]
+>>>>>>> Stashed changes
 
 [ext_resource type="Script" uid="uid://ciheqlr0a0rjp" path="res://addons/road-generator/nodes/road_container.gd" id="1_42l2o"]
 [ext_resource type="Material" uid="uid://dpashsuk5lr4x" path="res://addons/road-generator/resources/road_texture.material" id="2_ldtag"]
