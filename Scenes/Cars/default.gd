@@ -20,11 +20,24 @@ const CAMERA_RESET_DELAY: float = 3.0
 var should_reset_camera: bool = false
 var camera_is_free: bool = false
 
+
+var road_grid_size: float = 500.0  # Size of each road tile
+var render_distance: int = 2  # How many tiles to render in each direction
+var current_grid_pos: Vector2i = Vector2i.ZERO
+var spawned_roads: Dictionary = {}  # Track spawned road positions
+var roads_to_remove: Array[Vector3] = []
+
+# Road prefabs - using 4-way as universal road tile
+var road_container_scene  = preload("res://Scenes/Roads/4_way_2x_2.tscn")
+
 @onready var camera_pivot: Node3D = $CameraPivot
 @onready var camera: Camera3D = $CameraPivot/Camera
 @onready var reverse_camera: Camera3D = $CameraPivot/ReverseCamera
 
 @onready var speedometer_ui: Control = $SpeedometerUI
+
+@onready var road_manager: RoadManager = $"../RoadManager"
+
 
 var spawn_position
 var spawn_rotation
@@ -45,6 +58,14 @@ func _ready() -> void:
 	cam_position = camera_pivot.global_position
 	cam_spawn_rotation = camera_pivot.global_rotation  # Store original camera pivot rotation
 	camera_spawn_rotation = camera.rotation  # Store original camera local rotation
+	
+	current_grid_pos = Vector2i(
+		int(global_position.x / road_grid_size),
+		int(global_position.z / road_grid_size)
+	)
+	
+	# Spawn initial roads
+	spawn_roads_around_player()
 	
 	mass = 1200.0
 	center_of_mass_mode = RigidBody3D.CENTER_OF_MASS_MODE_CUSTOM
@@ -77,6 +98,7 @@ func Controller_Rotation():
 
 func _physics_process(delta: float) -> void:
 	Controller_Rotation()
+	update_infinite_roads()
 	
 	current_speed = linear_velocity.length() * 3.6
 	speedometer_ui.update_speed(current_speed)
@@ -92,7 +114,7 @@ func _physics_process(delta: float) -> void:
 	var speed_factor = clamp(1.0 - (current_speed / max_speed) * 0.3, 0.6, 1.0)  # Less reduction
 	var steering_input = Input.get_action_strength("Left") - Input.get_action_strength("Right")
 	var target_steering = steering_input * MAX_STEER * speed_factor
-	steering = move_toward(steering, target_steering, delta * 4.0)  # Faster steering response
+	steering = move_toward(steering, target_steering, delta * 10.0)  # Faster steering response
 	
 	var throttle_input = Input.get_action_strength("Forward")
 	var reverse_input = Input.get_action_strength("Backward")
@@ -143,6 +165,122 @@ func _physics_process(delta: float) -> void:
 		engine_force *= 0.5
 	elif current_speed < 50 and gear == 5:
 		engine_force *= 0.3
+
+func update_infinite_roads():
+	# Calculate current grid position based on car position
+	var new_grid_pos = Vector2i(
+		int(global_position.x / road_grid_size),
+		int(global_position.z / road_grid_size)
+	)
+	
+	# Only update if we've moved to a new grid cell
+	if new_grid_pos != current_grid_pos:
+		current_grid_pos = new_grid_pos
+		spawn_roads_around_player()
+		cleanup_distant_roads()
+
+func spawn_roads_around_player():
+	# Spawn roads in a grid around the player
+	for x in range(current_grid_pos.x - render_distance, current_grid_pos.x + render_distance + 1):
+		for z in range(current_grid_pos.y - render_distance, current_grid_pos.y + render_distance + 1):
+			var grid_key = Vector2i(x, z)
+			
+			# Skip if road already exists at this position
+			if spawned_roads.has(grid_key):
+				continue
+			
+			# Calculate world position
+			var world_pos = Vector3(
+				x * road_grid_size,
+				0,
+				z * road_grid_size
+			)
+			
+			# Spawn the road using your road generator system
+			spawn_road_at_position(grid_key, world_pos)
+
+func spawn_road_at_position(grid_key: Vector2i, world_pos: Vector3):
+	var road_instance
+	
+	# Method 1: If your 4-way is a saved scene file
+	if road_container_scene:
+		road_instance = road_container_scene.instantiate()
+		road_instance.global_position = world_pos
+		# Add to your existing road_manager
+		road_manager.add_child(road_instance)
+		
+		# If it's a RoadContainer, trigger rebuild
+		if road_instance.has_method("is_road_container"):
+			road_instance.rebuild_segments()
+	
+	# Method 2: If you need to create RoadContainer programmatically
+	else:
+		road_instance = create_programmatic_road_container(world_pos, grid_key)
+	
+	# Store reference
+	spawned_roads[grid_key] = road_instance
+	print("Spawned road at grid: ", grid_key, " world: ", world_pos)
+
+func create_programmatic_road_container(world_pos: Vector3, grid_key: Vector2i) -> Node3D:
+	# This function creates a RoadContainer programmatically
+	# You'll need to adjust this based on your road generator's API
+	
+	# Create a new RoadContainer (adjust class name as needed)
+	var road_container = RoadContainer.new()  # Or whatever your container class is called
+	road_container.global_position = world_pos
+	road_container.name = "Road_" + str(grid_key.x) + "_" + str(grid_key.y)
+	
+	# Create road points for a 4-way intersection
+	# This is a basic example - you'll need to adjust based on your system
+	create_4way_road_points(road_container, world_pos)
+	
+	# Add to road manager
+	road_manager.add_child(road_container)
+	
+	# Rebuild the road mesh
+	road_container.rebuild_segments()
+	
+	return road_container
+
+func create_4way_road_points(container: Node3D, center_pos: Vector3):
+	# Create road points for a 4-way intersection
+	# This is a simplified example - adjust based on your road generator's requirements
+	
+	var road_width = 50.0  # Adjust based on your road width
+	var points = [
+		center_pos + Vector3(-road_width, 0, 0),  # West
+		center_pos,  # Center
+		center_pos + Vector3(road_width, 0, 0),   # East
+		center_pos,  # Back to center
+		center_pos + Vector3(0, 0, -road_width),  # North
+		center_pos,  # Back to center
+		center_pos + Vector3(0, 0, road_width),   # South
+	]
+	
+	# Add points to your road container
+	# You'll need to adapt this to your road generator's API
+	for i in range(points.size()):
+		var road_point = RoadPoint.new()  # Or whatever your point class is
+		road_point.position = points[i]
+		container.add_child(road_point)
+
+func cleanup_distant_roads():
+	roads_to_remove.clear()
+	
+	# Find roads that are too far away
+	for grid_pos in spawned_roads.keys():
+		var distance = grid_pos.distance_to(current_grid_pos)
+		if distance > render_distance + 1:  # Add buffer before removing
+			roads_to_remove.append(grid_pos)
+	
+	# Remove distant roads
+	for grid_pos in roads_to_remove:
+		if spawned_roads.has(grid_pos):
+			var road = spawned_roads[grid_pos]
+			if is_instance_valid(road):
+				road.queue_free()
+			spawned_roads.erase(grid_pos)
+			print("Removed road at grid: ", grid_pos)
 
 
 func handle_camera_reset_timer(delta: float):
@@ -235,3 +373,36 @@ func check_camera_switch():
 		reverse_camera.current = true
 	else:
 		camera.current = true
+
+var roads_to_spawn: Array[Dictionary] = []
+var spawn_batch_size: int = 1  # How many roads to spawn per frame
+
+func spawn_roads_around_player_batched():
+	# Clear previous batch
+	roads_to_spawn.clear()
+	
+	# Collect all positions that need roads
+	for x in range(current_grid_pos.x - render_distance, current_grid_pos.x + render_distance + 1):
+		for z in range(current_grid_pos.y - render_distance, current_grid_pos.y + render_distance + 1):
+			var grid_key = Vector2i(x, z)
+			
+			if not spawned_roads.has(grid_key):
+				var world_pos = Vector3(x * road_grid_size, 0, z * road_grid_size)
+				roads_to_spawn.append({"grid": grid_key, "pos": world_pos})
+	
+	# Start spawning process
+	if roads_to_spawn.size() > 0:
+		spawn_next_batch()
+
+func spawn_next_batch():
+	# Spawn a batch of roads per frame for better performance
+	var spawned_this_frame = 0
+	
+	while roads_to_spawn.size() > 0 and spawned_this_frame < spawn_batch_size:
+		var road_data = roads_to_spawn.pop_front()
+		spawn_road_at_position(road_data.grid, road_data.pos)
+		spawned_this_frame += 1
+	
+	# Continue spawning next frame if there are more roads
+	if roads_to_spawn.size() > 0:
+		call_deferred("spawn_next_batch")
