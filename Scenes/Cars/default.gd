@@ -27,8 +27,6 @@ var current_grid_pos: Vector2i = Vector2i.ZERO
 var spawned_roads: Dictionary = {}  # Track spawned road positions
 var roads_to_remove: Array[Vector3] = []
 
-<<<<<<< Updated upstream
-=======
 var road_spawn_queue: Array[Dictionary] = []
 var roads_cleanup_queue: Array[Vector2i] = []
 var max_spawns_per_frame: int = 1
@@ -36,7 +34,6 @@ var max_cleanups_per_frame: int = 2
 var frame_counter: int = 0
 var update_frequency: int = 3
 
->>>>>>> Stashed changes
 # Road prefabs - using 4-way as universal road tile
 var road_container_scene  = preload("res://Scenes/Roads/4_way_2x_2.tscn")
 
@@ -109,12 +106,9 @@ func Controller_Rotation():
 func _physics_process(delta: float) -> void:
 	Controller_Rotation()
 	update_infinite_roads()
-<<<<<<< Updated upstream
-=======
 	
 	process_spawn_queue()
 	process_cleanup_queue()
->>>>>>> Stashed changes
 	
 	current_speed = linear_velocity.length() * 3.6
 	speedometer_ui.update_speed(current_speed)
@@ -183,16 +177,12 @@ func _physics_process(delta: float) -> void:
 		engine_force *= 0.3
 
 func update_infinite_roads():
-<<<<<<< Updated upstream
-	# Calculate current grid position based on car position
-=======
 	# Only check for updates every few frames
 	frame_counter += 1
 	if frame_counter % update_frequency != 0:
 		return
 	
 	# Calculate current grid position
->>>>>>> Stashed changes
 	var new_grid_pos = Vector2i(
 		int(global_position.x / road_grid_size),
 		int(global_position.z / road_grid_size)
@@ -201,13 +191,8 @@ func update_infinite_roads():
 	# Only update if we've moved to a new grid cell
 	if new_grid_pos != current_grid_pos:
 		current_grid_pos = new_grid_pos
-<<<<<<< Updated upstream
-		spawn_roads_around_player()
-		cleanup_distant_roads()
-=======
 		queue_roads_for_spawning()
 		queue_roads_for_cleanup()
->>>>>>> Stashed changes
 
 func spawn_roads_around_player():
 	# Spawn roads in a grid around the player
@@ -312,8 +297,6 @@ func cleanup_distant_roads():
 			spawned_roads.erase(grid_pos)
 			print("Removed road at grid: ", grid_pos)
 
-<<<<<<< Updated upstream
-=======
 func queue_roads_for_spawning():
 	# Clear existing queue
 	road_spawn_queue.clear()
@@ -419,7 +402,6 @@ func should_use_detailed_road(world_pos: Vector3) -> bool:
 func rebuild_road_segments(road_instance):
 	if is_instance_valid(road_instance):
 		road_instance.rebuild_segments()
->>>>>>> Stashed changes
 
 func handle_camera_reset_timer(delta: float):
 	# Always increment timer when camera is free
