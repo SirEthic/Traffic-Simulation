@@ -246,19 +246,34 @@ func reset_pos_road():
 	  
 	var world_shift = Vector3.ZERO
 	
-	# Check boundaries and calculate shift
+	# Check X boundary
 	if global_position.x > boundary:
 		world_shift.x = -shift_distance
+		print("Shifting world X: ", world_shift.x)
 	elif global_position.x < -boundary:
 		world_shift.x = shift_distance
+		print("Shifting world X: ", world_shift.x)
 		
+	# Check Z boundary  
 	if global_position.z > boundary:
 		world_shift.z = -shift_distance
+		print("Shifting world Z: ", world_shift.z)
 	elif global_position.z < -boundary:
+		world_shift.z = shift_distance
+		print("Shifting world Z: ", world_shift.z)
+	
+	if global_position.x > boundary and global_position.z > boundary:
+		world_shift.x = -shift_distance
+		world_shift.z = -shift_distance
+	elif global_position.x < -boundary and global_position.z < -boundary:
+		world_shift.x = shift_distance
 		world_shift.z = shift_distance
 	
 	# Apply shift to car and all world objects
 	if world_shift != Vector3.ZERO:
+		print("Car position before shift: ", global_position)
+		print("World shift vector: ", world_shift)
+		
 		global_position += world_shift
 		
 		# IMPORTANT: Shift the camera pivot by the same amount to maintain seamless illusion
