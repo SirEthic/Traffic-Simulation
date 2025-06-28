@@ -28,11 +28,11 @@ script = ExtResource("1")
 material_resource = ExtResource("3")
 use_lowpoly_preview = true
 generate_ai_lanes = true
-edge_containers = Array[NodePath]([NodePath(""), NodePath(""), NodePath(""), NodePath(""), NodePath(""), NodePath(""), NodePath("")])
-edge_rp_targets = Array[NodePath]([NodePath(""), NodePath(""), NodePath(""), NodePath(""), NodePath(""), NodePath(""), NodePath("")])
-edge_rp_target_dirs = Array[int]([-1, -1, -1, -1, -1, -1, -1])
-edge_rp_locals = Array[NodePath]([NodePath("RP_001"), NodePath("RP_001"), NodePath("RP_002"), NodePath("RP_003"), NodePath("RP_003"), NodePath("RP_004"), NodePath("RP_004")])
-edge_rp_local_dirs = Array[int]([0, 1, 0, 0, 1, 0, 1])
+edge_containers = Array[NodePath]([NodePath(""), NodePath(""), NodePath(""), NodePath(""), NodePath(""), NodePath(""), NodePath(""), NodePath("")])
+edge_rp_targets = Array[NodePath]([NodePath(""), NodePath(""), NodePath(""), NodePath(""), NodePath(""), NodePath(""), NodePath(""), NodePath("")])
+edge_rp_target_dirs = Array[int]([-1, -1, -1, -1, -1, -1, -1, -1])
+edge_rp_locals = Array[NodePath]([NodePath("RP_001"), NodePath("RP_001"), NodePath("RP_002"), NodePath("RP_002"), NodePath("RP_003"), NodePath("RP_003"), NodePath("RP_004"), NodePath("RP_004")])
+edge_rp_local_dirs = Array[int]([0, 1, 0, 1, 0, 1, 0, 1])
 
 [node name="RP_001" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -16)
