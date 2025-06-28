@@ -36,20 +36,6 @@ script = ExtResource("1_adj8p")
 material_resource = ExtResource("2_3qc4n")
 
 [node name="4way_2x2" parent="RoadManager" instance=ExtResource("3_3qy6o")]
-edge_rp_targets = Array[NodePath]([NodePath(""), NodePath("RP_007"), NodePath(""), NodePath(""), NodePath(""), NodePath(""), NodePath("RP_010"), NodePath("")])
-edge_rp_target_dirs = Array[int]([-1, 1, -1, -1, -1, -1, 0, -1])
-
-[node name="4way_2x3" parent="RoadManager" instance=ExtResource("3_3qy6o")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1000)
-
-[node name="4way_2x4" parent="RoadManager" instance=ExtResource("3_3qy6o")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1000)
-
-[node name="4way_2x5" parent="RoadManager" instance=ExtResource("3_3qy6o")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1000, 0, 0)
-
-[node name="4way_2x6" parent="RoadManager" instance=ExtResource("3_3qy6o")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1000, 0, 0)
 
 [node name="Car" parent="." instance=ExtResource("7_3qc4n")]
 
