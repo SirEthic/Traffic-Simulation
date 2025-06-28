@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://jkkpyvqqjdfu" path="res://addons/road-generator/nodes/road_manager.gd" id="1_adj8p"]
 [ext_resource type="Material" uid="uid://dpashsuk5lr4x" path="res://addons/road-generator/resources/road_texture.material" id="2_3qc4n"]
-[ext_resource type="PackedScene" uid="uid://cc6molfhnpbe" path="res://Scenes/Roads/4_way_2x_2.tscn" id="3_3qy6o"]
+[ext_resource type="PackedScene" uid="uid://c0trjdsgmbn10" path="res://Scenes/Roads/4_way_2x_2.tscn" id="3_3qy6o"]
 [ext_resource type="PackedScene" uid="uid://bnx8t2ax7ydax" path="res://Scenes/Cars/default.tscn" id="7_3qc4n"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_3qc4n"]
@@ -32,12 +32,13 @@ transform = Transform3D(-0.866023, -0.433016, 0.250001, 0, 0.499998, 0.866027, -
 shadow_enabled = true
 
 [node name="RoadManager" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.429382, 0, 2.13019)
 script = ExtResource("1_adj8p")
 material_resource = ExtResource("2_3qc4n")
 
 [node name="4way_2x2" parent="RoadManager" instance=ExtResource("3_3qy6o")]
-edge_rp_targets = Array[NodePath]([NodePath(""), NodePath("RP_007"), NodePath(""), NodePath(""), NodePath(""), NodePath(""), NodePath("RP_010"), NodePath("")])
-edge_rp_target_dirs = Array[int]([-1, 1, -1, -1, -1, -1, 0, -1])
+edge_rp_targets = Array[NodePath]([NodePath(""), NodePath("RP_007"), NodePath(""), NodePath(""), NodePath(""), NodePath(""), NodePath("RP_010"), NodePath("RP_012")])
+edge_rp_target_dirs = Array[int]([-1, 1, -1, -1, -1, -1, 0, 0])
 
 [node name="4way_2x3" parent="RoadManager" instance=ExtResource("3_3qy6o")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1000)
@@ -47,9 +48,23 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1000)
 
 [node name="4way_2x5" parent="RoadManager" instance=ExtResource("3_3qy6o")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1000, 0, 0)
+edge_rp_targets = Array[NodePath]([NodePath(""), NodePath(""), NodePath("RP_006"), NodePath(""), NodePath(""), NodePath(""), NodePath("RP_010"), NodePath("")])
+edge_rp_target_dirs = Array[int]([-1, -1, 0, -1, -1, -1, 0, -1])
 
 [node name="4way_2x6" parent="RoadManager" instance=ExtResource("3_3qy6o")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1000, 0, 0)
+
+[node name="4way_2x7" parent="RoadManager" instance=ExtResource("3_3qy6o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1000, 0, 1000)
+
+[node name="4way_2x8" parent="RoadManager" instance=ExtResource("3_3qy6o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1000, 0, -1000)
+
+[node name="4way_2x9" parent="RoadManager" instance=ExtResource("3_3qy6o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1000, 0, -1000)
+
+[node name="4way_2x10" parent="RoadManager" instance=ExtResource("3_3qy6o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1000, 0, 1000)
 
 [node name="Car" parent="." instance=ExtResource("7_3qc4n")]
 

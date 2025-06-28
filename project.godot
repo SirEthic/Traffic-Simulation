@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="Traffic Simulation"
-run/main_scene="uid://bej4gl4tnwkf2"
+run/main_scene="uid://q3004ieya4aa"
 config/features=PackedStringArray("4.4", "Forward Plus")
 config/icon="res://icon.svg"
 
