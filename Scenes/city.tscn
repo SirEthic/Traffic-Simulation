@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://jkkpyvqqjdfu" path="res://addons/road-generator/nodes/road_manager.gd" id="1_adj8p"]
 [ext_resource type="Material" uid="uid://dpashsuk5lr4x" path="res://addons/road-generator/resources/road_texture.material" id="2_3qc4n"]
-[ext_resource type="PackedScene" uid="uid://c0trjdsgmbn10" path="res://Scenes/Roads/4_way_2x_2.tscn" id="3_3qy6o"]
+[ext_resource type="PackedScene" uid="uid://cc6molfhnpbe" path="res://Scenes/Roads/4_way_2x_2.tscn" id="3_3qy6o"]
 [ext_resource type="PackedScene" uid="uid://bnx8t2ax7ydax" path="res://Scenes/Cars/default.tscn" id="7_3qc4n"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_3qc4n"]
